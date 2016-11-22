@@ -82,6 +82,8 @@ function uare.new(t, f)
   
   uareObj.visible, uareObj.vAlpha = f.visible or true, 1
   
+  uareObj.shape = f.shape or "rect"
+  
   if uareObj.content then
     if not uareObj.content.scroll then uareObj.content.scroll = {x = 0, y = 0} end
     uareObj.content.width, uareObj.content.height = uareObj.content.width or uareObj.width, uareObj.content.height or uareObj.height
@@ -194,12 +196,20 @@ function uare:drawSelf()
   if self.center then tempX, tempY = self.x-self.width*.5, self.y-self.height*.5 end
   
   love.graphics.setColor(self:alphaColor(((self.hold and self.holdColor) and self.holdColor) or ((self.hover and self.hoverColor) and self.hoverColor) or self.color))
-  love.graphics.rectangle("fill", tempX, tempY, self.width, self.height)
+  if self.shape == "rect" then
+    love.graphics.rectangle("fill", tempX, tempY, self.width, self.height)
+  elseif self.shape == "oval" then
+    love.graphics.ellipse("fill", tempX+self.width/2, tempY+self.height/2, self.width/2, self.height/2)
+  end
   
   if self.border and self.border.color and self.border.size then
     love.graphics.setColor(self:alphaColor(((self.hold and self.border.holdColor) and self.border.holdColor) or ((self.hover and self.border.hoverColor) and self.border.hoverColor) or self.border.color))
     love.graphics.setLineWidth(self.border.size)
-    love.graphics.rectangle("line", tempX, tempY, self.width, self.height)
+    if self.shape == "rect" then
+      love.graphics.rectangle("line", tempX, tempY, self.width, self.height)
+    elseif self.shape == "oval" then
+      love.graphics.ellipse("line", tempX+self.width/2, tempY+self.height/2, self.width/2, self.height/2)
+    end
   end
   
   if self.icon and self.icon.source.type and self.icon.source.content then
