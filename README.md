@@ -205,6 +205,8 @@ color
 hoverColor
 holdColor
 
+shape -- of button: "rect" (default) of "oval"
+
 active(true)
 visible (true)
 
